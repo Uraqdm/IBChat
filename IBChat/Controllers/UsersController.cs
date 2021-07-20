@@ -36,6 +36,12 @@ namespace IBChat.Controllers
             return user;
         }
 
+        [HttpGet("userEmail")]
+        public async Task<ActionResult<User>> GetUser(string passHash, string email)
+        {
+            return await _context.Users.Where(u => u.Password == passHash && u.Email == email).FirstOrDefaultAsync();
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateUser(User user)
         {
