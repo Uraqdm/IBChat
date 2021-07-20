@@ -24,7 +24,7 @@ namespace IBChat.Controllers
             return await _context.Chats.ToListAsync();
         }
 
-        [HttpGet("{Guid}")]
+        [HttpGet("{chatGuid}")]
         public async Task<Chat> GetChat(Guid guid)
         {
             return await _context.Chats.Where(c => c.Guid == guid).FirstOrDefaultAsync();
@@ -40,7 +40,7 @@ namespace IBChat.Controllers
             return CreatedAtAction(nameof(GetChat), new { Guid = chat.Guid}, chat);
         }
 
-        [HttpPut("{Guid}")]
+        [HttpPut("{chatGuid}")]
         public async Task<IActionResult> ChangeChat(Guid guid, Chat chat)
         {
             if (guid != chat.Guid) return BadRequest();
@@ -64,7 +64,7 @@ namespace IBChat.Controllers
             
         }
 
-        [HttpDelete("{Guid}")]
+        [HttpDelete("{chatGuid}")]
         public async Task<IActionResult> DeleteChat(Guid guid)
         {
             var chat = await _context.Chats.FindAsync(guid);
