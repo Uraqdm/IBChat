@@ -27,7 +27,7 @@ namespace IBChat.Controllers
         [HttpGet("{chatGuid}")]
         public async Task<Chat> GetChat(Guid guid)
         {
-            return await _context.Chats.Where(c => c.Guid == guid).FirstOrDefaultAsync();
+            return await _context.Chats.Where(c => c.Id == guid).FirstOrDefaultAsync();
         }
 
         [HttpPost]
@@ -37,13 +37,13 @@ namespace IBChat.Controllers
 
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetChat), new { Guid = chat.Guid}, chat);
+            return CreatedAtAction(nameof(GetChat), new { Guid = chat.Id}, chat);
         }
 
         [HttpPut("{chatGuid}")]
         public async Task<IActionResult> ChangeChat(Guid guid, Chat chat)
         {
-            if (guid != chat.Guid) return BadRequest();
+            if (guid != chat.Id) return BadRequest();
 
             var _chat = await _context.Chats.FindAsync(guid);
 

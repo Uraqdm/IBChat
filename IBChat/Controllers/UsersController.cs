@@ -21,7 +21,7 @@ namespace IBChat.Controllers
         [HttpGet("{chatGuid}")]
         public async Task<IEnumerable<User>> GetUsers(Guid chatGuid)
         {
-            return await _context.Chats.Where(c => c.Guid == chatGuid)
+            return await _context.Chats.Where(c => c.Id == chatGuid)
                 .SelectMany(c => c.Members)
                 .ToListAsync();
         }
@@ -45,7 +45,7 @@ namespace IBChat.Controllers
 
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetUser), new { Guid = user.Guid }, user);
+            return CreatedAtAction(nameof(GetUser), new { Guid = user.Id }, user);
         }
 
         [HttpDelete("{userGuid}")]
@@ -64,7 +64,7 @@ namespace IBChat.Controllers
         [HttpPut("{userGuid}")]
         public async Task<IActionResult> ChangeUser(Guid guid, User user)
         {
-            if (guid != user.Guid) return BadRequest();
+            if (guid != user.Id) return BadRequest();
 
             var oldUser = await _context.Users.FindAsync(guid);
 
