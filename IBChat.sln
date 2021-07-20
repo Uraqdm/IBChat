@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBChat", "IBChat\IBChat.csproj", "{54F7E513-D85D-4BD4-8BBA-3D6E40AB93A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IBChat", "IBChat\IBChat.csproj", "{54F7E513-D85D-4BD4-8BBA-3D6E40AB93A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Desctop", "Desctop", "{4015C3C2-E4D7-4D0D-BEE1-D1EBACBEFA64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBGChatDesctop", "IBGChatDesctop\IBGChatDesctop.csproj", "{0F9A04CF-5C66-4FDF-9F5A-661D75E432F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{54F7E513-D85D-4BD4-8BBA-3D6E40AB93A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54F7E513-D85D-4BD4-8BBA-3D6E40AB93A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54F7E513-D85D-4BD4-8BBA-3D6E40AB93A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F9A04CF-5C66-4FDF-9F5A-661D75E432F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F9A04CF-5C66-4FDF-9F5A-661D75E432F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F9A04CF-5C66-4FDF-9F5A-661D75E432F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F9A04CF-5C66-4FDF-9F5A-661D75E432F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0F9A04CF-5C66-4FDF-9F5A-661D75E432F5} = {4015C3C2-E4D7-4D0D-BEE1-D1EBACBEFA64}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0CBFCDCE-4E4D-4521-BCDF-1E2FBE23AC7B}
