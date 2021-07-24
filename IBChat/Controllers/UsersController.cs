@@ -1,5 +1,6 @@
 ﻿using IBChat.Domain.Context;
 using IBChat.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -36,10 +37,11 @@ namespace IBChat.Controllers
             return user;
         }
 
-        [HttpGet("Auth/")]
-        public async Task<ActionResult<User>> GetUser(string userEmail, string userPsswd)
+        [Authorize]
+        [HttpPut("Auth/")]
+        public async Task<ActionResult<User>> GetUser(string[] userData)
         {
-            return await _context.Users.Where(u => u.Password == userEmail && u.Email == userPsswd).FirstOrDefaultAsync();
+            return await _context.Users.Where(u => u.Password == userData[0] && u.Email == userData[1]).FirstOrDefaultAsync();
         }
 
         [HttpPost]
