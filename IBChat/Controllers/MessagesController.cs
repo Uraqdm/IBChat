@@ -39,18 +39,10 @@ namespace IBChat.Controllers
         [HttpPost]
         public async Task<ActionResult<Message>> AddMessage(Message message)
         {
-            var msg = new Message
-            {
-                DateTime = message.DateTime,
-                Chat = message.Chat,
-                Sender = message.Sender,
-                Text = message.Text
-            };
-
-            _context.Messages.Add(msg);
+            _context.Messages.Add(message);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetMessage), new {Guid = msg.Id }, msg);
+            return CreatedAtAction(nameof(GetMessage), new {Guid = message.Id }, message);
         }
 
     }
