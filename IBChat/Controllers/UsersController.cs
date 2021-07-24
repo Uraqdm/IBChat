@@ -41,7 +41,11 @@ namespace IBChat.Controllers
         [HttpPut("Auth/")]
         public async Task<ActionResult<User>> GetUser(string[] userData)
         {
-            return await _context.Users.Where(u => u.Password == userData[0] && u.Email == userData[1]).FirstOrDefaultAsync();
+            var user = await _context.Users.Where(u => u.Password == userData[0] && u.Email == userData[1]).FirstOrDefaultAsync();
+
+            if (user == null) return NotFound();
+
+            return user;
         }
 
         [HttpPost]
