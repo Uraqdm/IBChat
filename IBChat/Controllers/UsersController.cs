@@ -49,7 +49,14 @@ namespace IBChat.Controllers
 
             await _context.Users.AddAsync(user);
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+
+            }
 
             return CreatedAtAction(nameof(GetUser), new { Guid = user.Id }, user);
         }
@@ -62,7 +69,16 @@ namespace IBChat.Controllers
             if (user == null) return NotFound();
 
             _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(DbUpdateException)
+            {
+
+            }
+            
 
             return NoContent();
         }
@@ -80,9 +96,16 @@ namespace IBChat.Controllers
             oldUser.Name = user.Name;
             oldUser.Password = user.Password;
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
 
-            return NoContent();
+            }
+
+            return CreatedAtAction(nameof(GetUser), new { Guid = user.Id }, user);
         }
     }
 }

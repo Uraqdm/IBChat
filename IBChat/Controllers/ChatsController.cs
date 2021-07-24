@@ -35,8 +35,14 @@ namespace IBChat.Controllers
         {
             _context.Chats.Add(chat);
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
 
+            }
             return CreatedAtAction(nameof(GetChat), new { Guid = chat.Id}, chat);
         }
 
@@ -73,7 +79,15 @@ namespace IBChat.Controllers
 
             _context.Chats.Remove(chat);
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+
+            }
+            
 
             return NoContent();
         }
