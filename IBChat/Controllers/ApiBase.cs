@@ -3,7 +3,7 @@
 namespace IBChat.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ApiBase : ControllerBase
     {
         
