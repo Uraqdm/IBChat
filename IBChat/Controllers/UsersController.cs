@@ -18,7 +18,7 @@ namespace IBChat.Controllers
             _context = context;
         }
 
-        [HttpGet("{chatGuid}")]
+        [HttpGet("Chat/{chatGuid}")]
         public async Task<IEnumerable<User>> GetUsers(Guid chatGuid)
         {
             return await _context.Chats.Where(c => c.Id == chatGuid)
@@ -26,7 +26,7 @@ namespace IBChat.Controllers
                 .ToListAsync();
         }
 
-        [HttpGet("userGuid")]
+        [HttpGet("Id/{userGuid}")]
         public async Task<ActionResult<User>> GetUser(Guid userGuid)
         {
             var user = await _context.Users.FindAsync(userGuid);
@@ -36,10 +36,10 @@ namespace IBChat.Controllers
             return user;
         }
 
-        [HttpGet("userEmail")]
-        public async Task<ActionResult<User>> GetUser(string passHash, string email)
+        [HttpGet("Auth/")]
+        public async Task<ActionResult<User>> GetUser(string userEmail, string userPsswd)
         {
-            return await _context.Users.Where(u => u.Password == passHash && u.Email == email).FirstOrDefaultAsync();
+            return await _context.Users.Where(u => u.Password == userEmail && u.Email == userPsswd).FirstOrDefaultAsync();
         }
 
         [HttpPost]
