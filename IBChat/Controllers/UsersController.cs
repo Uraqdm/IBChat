@@ -37,11 +37,10 @@ namespace IBChat.Controllers
             return user;
         }
 
-        [Authorize]
         [HttpPut("Auth/")]
-        public async Task<ActionResult<User>> GetUser(string[] userData)
+        public async Task<ActionResult<User>> Authorize(Token token)
         {
-            var user = await _context.Users.Where(u => u.Password == userData[0] && u.Email == userData[1]).FirstOrDefaultAsync();
+            var user = await _context.Users.Where(u => u.Email == token.Email && u.Password == token.Password).FirstOrDefaultAsync();
 
             if (user == null) return NotFound();
 
@@ -90,17 +89,11 @@ namespace IBChat.Controllers
         }
 
         [HttpPut("{userGuid}")]
-        public async Task<IActionResult> ChangeUser(Guid guid, User user)
+        public async Task<IActionResult> ChangeUser(Guid userGuid, User user)
         {
-            if (guid != user.Id) return BadRequest();
+            if (userGuid != user.Id) return BadRequest();
 
-            var oldUser = await _context.Users.FindAsync(guid);
-
-            if (oldUser == null) return NotFound();
-
-            oldUser.Email = user.Email;
-            oldUser.Name = user.Name;
-            oldUser.Password = user.Password;
+            _context.Entry(user).State = EntityState.Modified;
 
             try
             {
