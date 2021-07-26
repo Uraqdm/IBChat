@@ -1,6 +1,7 @@
 ﻿using IBChat.Domain.Models;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -39,6 +40,28 @@ namespace IBGChatDesctop.Service
                 return user;
             }
             else return null;
+        }
+
+        public async Task<IEnumerable<Chat>> GetUserChatsAsync(Guid userId)
+        {
+            var requestUrl = client.BaseAddress + $"Chats/UserId/{userId}";
+
+            try
+            {
+                var response = await client.GetFromJsonAsync(requestUrl, typeof(IEnumerable<Chat>));
+                var chats = response as IEnumerable<Chat>;
+
+                return chats;
+            }
+            catch (TaskCanceledException ex)
+            {
+                if (ex.CancellationToken.IsCancellationRequested)
+                {
+                    //Set timeout error here
+                }
+                //Set server error here
+                return null;
+            }
         }
     }
 }
