@@ -7,22 +7,41 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       xmlns:vm="clr-namespace:IBGChatDesctop.ViewModels"
-      Title="Authorization">
+      Title="Authorization"
+      ShowsNavigationUI="False">
 
     <Page.DataContext>
         <vm:AuthorizationViewModel/>
     </Page.DataContext>
 
 
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <Image Grid.ColumnSpan="2" Source="/Images/background.png" Stretch="UniformToFill"/>
+        
         <Grid>
-        <StackPanel Margin="50">
-            <TextBlock Text="Email" FontSize="24" Margin="5"/>
-            <TextBox Text="{Binding Email}" Margin="15, 5"/>
+            <Grid.Background>
+                <LinearGradientBrush Opacity="0.7">
+                    <GradientStop Color="Gray" Offset="1"/>
+                    <GradientStop Color="Black"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <StackPanel Margin="5">
+                <TextBlock Text="IBChat" Foreground="White" Margin="5, 25" FontSize="34" TextAlignment="Center"/>
 
-            <TextBlock Text="Pasword" FontSize="24" Margin="5"/>
-            <TextBox Text="{Binding Password}" Margin="15, 5"/>
+                <TextBlock Text="Email" TextAlignment="Center" Foreground="White" FontSize="24" Margin="5"/>
+                <TextBox Text="{Binding Email}" FontSize="14" Margin="15, 5"/>
 
-            <Button Content="Submit" Command="{Binding Authorizate}" Margin="20"/>
-        </StackPanel>
+                <TextBlock Text="Pasword" TextAlignment="Center" Foreground="White" FontSize="24" Margin="5"/>
+                <TextBox Text="{Binding Password}" FontSize="14" Margin="15, 5"/>
+
+                <Button Content="Submit" Command="{Binding Authorizate}" Margin="25" FontSize="24"/>
+            </StackPanel>
+        </Grid>
+        
     </Grid>
 </Page>
