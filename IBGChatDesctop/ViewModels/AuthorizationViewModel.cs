@@ -1,6 +1,7 @@
 ﻿using IBChat.Domain.Models;
 using IBGChatDesctop.Commands;
 using IBGChatDesctop.Service;
+using IBGChatDesctop.Views;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -41,8 +42,10 @@ namespace IBGChatDesctop.ViewModels
                 User = await client.AuthorizateUserAsync(Email, Password);
 
                 if (User != null)
-                    MessageBox.Show(User.Id.ToString());
-                else MessageBox.Show("User with this email and password not found. Please, try again.");
+                    NavigationHandler.NavigationService.Navigate(new MainPage());
+
+                else
+                    MessageBox.Show("User with this email and password not found. Please, try again.");
             }
             catch(Exception)
             {
