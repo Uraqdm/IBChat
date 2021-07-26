@@ -3,6 +3,7 @@ using IBChat.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,10 +18,20 @@ namespace IBChat.Controllers
             _context = context;
         }
 
-        [HttpGet("{chatGuid}")]
+        [HttpGet("Id/{chatGuid}")]
         public async Task<Chat> GetChat(Guid guid)
         {
             return await _context.Chats.Where(c => c.Id == guid).FirstOrDefaultAsync();
+        }
+
+        [HttpGet("UserId/{userId}")]
+        public async Task<ActionResult<IEnumerable<Chat>>> GetUserChats(Guid userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user == null) return NotFound();
+
+            return await _context.Chats.Where(c => c.Members.Contains(user)).ToListAsync();
         }
 
         [HttpPost]
