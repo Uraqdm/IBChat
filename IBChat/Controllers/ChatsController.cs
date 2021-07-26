@@ -3,7 +3,6 @@ using IBChat.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,12 +15,6 @@ namespace IBChat.Controllers
         public ChatsController(AppDbContext context)
         {
             _context = context;
-        }
-
-        [HttpGet]
-        public async Task<IEnumerable<Chat>> GetChats()
-        {
-            return await _context.Chats.ToListAsync();
         }
 
         [HttpGet("{chatGuid}")]
