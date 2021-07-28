@@ -1,6 +1,5 @@
 ﻿using IBChat.Domain.Context;
 using IBChat.Domain.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,11 +19,9 @@ namespace IBChat.Controllers
         }
 
         [HttpGet("Chat/{chatGuid}")]
-        public async Task<IEnumerable<User>> GetUsers(Guid chatGuid)
+        public async Task<IEnumerable<User>> GetChatUsers(Guid chatGuid)
         {
-            return await _context.Chats.Where(c => c.Id == chatGuid)
-                .SelectMany(c => c.Members)
-                .ToListAsync();
+            return await _context.ChatMembers.Where(member => member.Chat.Id == chatGuid).Select(member => member.User).ToListAsync();
         }
 
         [HttpGet("Id/{userGuid}")]
