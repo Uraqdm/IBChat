@@ -15,6 +15,7 @@ namespace IBGChatDesctop.ViewModels
         #region fields
 
         private readonly HttpClientService client = new HttpClientService();
+        private User user;
         
         #endregion
 
@@ -24,7 +25,6 @@ namespace IBGChatDesctop.ViewModels
         public string Password { get; set; }
         public string Email { get; set; }
 
-        public User User { get; set; }
         #endregion
 
         #region commands
@@ -39,10 +39,13 @@ namespace IBGChatDesctop.ViewModels
         {
             try
             {
-                User = await client.AuthorizateUserAsync(Email, Password);
+                user = await client.AuthorizateUserAsync(Email, Password);
 
-                if (User != null)
+                if (user != null)
+                {
+                    MainPageViewModel.CurrentUser = user;
                     NavigationHandler.NavigationService.Navigate(new MainPage());
+                }
 
                 else
                     MessageBox.Show("User with this email and password not found. Please, try again.");

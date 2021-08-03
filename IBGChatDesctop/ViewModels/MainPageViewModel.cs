@@ -15,28 +15,15 @@ namespace IBGChatDesctop.ViewModels
         #endregion
 
         #region props
+
         /// <summary>
         /// Current chat, selected by user.
         /// </summary>
         public Chat SelectedChat { get; set; }
 
-        public User CurrentUser { get; set; }
+        public static User CurrentUser { get; set; }
 
-        public ObservableCollection<Chat> Chats { get; set; }
-        #endregion
-
-        #region Commands
-
-        public ICommand SelectChat { get; }
-
-        #endregion
-
-        #region Comand methods
-
-        private async void SelectChatAsync(object o)
-        {
-
-        }
+        public ObservableCollection<Chat> Chats { get; private set; }
 
         #endregion
 
@@ -44,7 +31,6 @@ namespace IBGChatDesctop.ViewModels
 
         public MainPageViewModel()
         {
-            SelectChat = new DelegateCommand(SelectChatAsync, o => SelectedChat != null);
             service = new HttpClientService();
 
             SetUserChats();
@@ -56,7 +42,12 @@ namespace IBGChatDesctop.ViewModels
 
         private async void SetUserChats()
         {
-            Chats = new ObservableCollection<Chat>(await service.GetUserChatsAsync(CurrentUser.Id));
+            var userChats = await service.GetUserChatsAsync(CurrentUser.Id);
+
+            if (userChats != null)
+                Chats = new ObservableCollection<Chat>(userChats);
+
+            else Chats = new ObservableCollection<Chat>();
         }
 
         #endregion
