@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:IBGChatDesctop"
              StartupUri="Views/Authorization.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/Fonts.xaml"/>
+                <ResourceDictionary Source="/Styles/Text.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
