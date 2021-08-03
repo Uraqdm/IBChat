@@ -74,7 +74,7 @@ namespace IBGChatDesctop.Service
         /// </summary>
         /// <param name="message">Sending message</param>
         /// <returns>if operation were succes it returns Message, delivered on server. Otherwise return null.</returns>
-        public async Task<Message> SendMessage(Message message)
+        public async Task<Message> SendMessageAsync(Message message)
         {
             var requestUrl = client.BaseAddress + "Messages/";
 
