@@ -68,5 +68,26 @@ namespace IBGChatDesctop.Service
                 return null;
             }
         }
+
+        /// <summary>
+        /// Sends message on server async.
+        /// </summary>
+        /// <param name="message">Sending message</param>
+        /// <returns>if operation were succes it returns Message, delivered on server. Otherwise return null.</returns>
+        public async Task<Message> SendMessage(Message message)
+        {
+            var requestUrl = client.BaseAddress + "Messages/";
+
+            if (message == null) return null;
+
+            var response = await client.PostAsJsonAsync(requestUrl, message);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync()) as Message;
+            }
+
+            return null;
+        }
     }
 }
