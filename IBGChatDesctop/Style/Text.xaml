@@ -10,14 +10,14 @@
         <Setter Property="FontSize" Value="{StaticResource Regular}"/>
     </Style>
 
-    <Style TargetType="TextBlock" BasedOn="TextBlockBase"/>
+    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockBase}"/>
 
-    <Style x:Key="Header" TargetType="TextBlock" BasedOn="TextBlockBase">
+    <Style x:Key="Header" TargetType="TextBlock" BasedOn="{StaticResource TextBlockBase}">
         <Setter Property="FontSize" Value="{StaticResource H1}"/>
         <Setter Property="TextAlignment" Value="Center"/>
     </Style>
 
-    <Style x:Key="TextBoxHeader" TargetType="TextBlock" BasedOn="TextBlockBase">
+    <Style x:Key="TextBoxHeader" TargetType="TextBlock" BasedOn="{StaticResource TextBlockBase}">
         <Setter Property="FontSize" Value="{StaticResource Big}"/>
     </Style>
 </ResourceDictionary>
