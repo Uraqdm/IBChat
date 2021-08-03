@@ -22,7 +22,7 @@ namespace IBGChatDesctop.Service
         }
 
         /// <summary>
-        /// Authorizates user by email and password
+        /// Authorizates user by given email and password
         /// </summary>
         /// <param name="email">Email</param>
         /// <param name="psswd">Password</param>
@@ -42,6 +42,11 @@ namespace IBGChatDesctop.Service
             else return null;
         }
 
+        /// <summary>
+        /// Get user chats from server async.
+        /// </summary>
+        /// <param name="userId">User id</param>
+        /// <returns>Return user chats if operation were success or user has any chat. Otherwise return null.</returns>
         public async Task<IEnumerable<Chat>> GetUserChatsAsync(Guid userId)
         {
             var requestUrl = client.BaseAddress + $"Chats/UserId/{userId}";
