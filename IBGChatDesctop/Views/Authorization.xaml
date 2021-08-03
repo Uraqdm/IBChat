@@ -31,12 +31,12 @@
                 </LinearGradientBrush>
             </Grid.Background>
             <StackPanel Margin="5">
-                <TextBlock Text="IBChat" Foreground="White" Margin="5, 25" FontSize="34" TextAlignment="Center"/>
+                <TextBlock Text="IBChat" Foreground="White" Margin="5, 25" Style="{StaticResource ResourceKey=Header}" TextAlignment="Center"/>
 
-                <TextBlock Text="Email" TextAlignment="Center" Foreground="White" FontSize="24" Margin="5"/>
+                <TextBlock Text="Email" Style="{StaticResource TextBoxHeader}" Foreground="White" Margin="5"/>
                 <TextBox Text="{Binding Email}" FontSize="14" Margin="15, 5"/>
 
-                <TextBlock Text="Pasword" TextAlignment="Center" Foreground="White" FontSize="24" Margin="5"/>
+                <TextBlock Text="Pasword" Style="{StaticResource TextBoxHeader}" Foreground="White" Margin="5"/>
                 <TextBox Text="{Binding Password}" FontSize="14" Margin="15, 5"/>
 
                 <Button Content="Submit" Command="{Binding Authorizate}" Margin="25" FontSize="24"/>
