@@ -1,0 +1,17 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:IBGChatDesctop.Style">
+    <Style TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{StaticResource Regular}"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+    
+    <Style TargetType="TextBox">
+        <Setter Property="FontSize" Value="{StaticResource Regular}"/>
+    </Style>
+
+    <Style x:Key="Header" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{StaticResource H1}"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+</ResourceDictionary>
