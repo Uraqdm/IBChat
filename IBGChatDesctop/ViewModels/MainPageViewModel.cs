@@ -1,7 +1,9 @@
 ﻿using IBChat.Domain.Models;
 using IBGChatDesctop.Commands;
 using IBGChatDesctop.Service;
+using System;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace IBGChatDesctop.ViewModels
@@ -25,6 +27,38 @@ namespace IBGChatDesctop.ViewModels
 
         public ObservableCollection<Chat> Chats { get; private set; }
 
+        public string SendingMessage { get; set; }
+
+        #endregion
+
+        #region commands
+
+        public ICommand SendMessage { get; }
+
+        #endregion
+
+        #region command methods
+
+        private async void SendMessageToSelectedChatAsync(object obj)
+        {
+            var msg = new Message 
+            { 
+                Chat = SelectedChat,
+                DateTime = DateTime.Now,
+                Sender = CurrentUser,
+                Text = SendingMessage 
+            };
+
+            SendingMessage = null;
+
+            var sendedMsg = await service.SendMessageAsync(msg);
+
+            if (sendedMsg != null)
+                SelectedChat.Messages.Add(sendedMsg);
+            else 
+                MessageBox.Show("Unable to send message on server.");
+        }
+
         #endregion
 
         #region ctor
@@ -34,6 +68,8 @@ namespace IBGChatDesctop.ViewModels
             service = new HttpClientService();
 
             SetUserChats();
+
+            SendMessage = new DelegateCommand(SendMessageToSelectedChatAsync, (obj) => !string.IsNullOrEmpty(SendingMessage) && SelectedChat != null);
         }
 
         #endregion

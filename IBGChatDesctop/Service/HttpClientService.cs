@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace IBGChatDesctop.Service
 {
@@ -80,11 +79,20 @@ namespace IBGChatDesctop.Service
 
             if (message == null) return null;
 
-            var response = await client.PostAsJsonAsync(requestUrl, message);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync()) as Message;
+                var response = await client.PostAsJsonAsync(requestUrl, message);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync()) as Message;
+                }
+            }
+            catch (TaskCanceledException ex)
+            {
+                if (ex.CancellationToken.IsCancellationRequested) { }
+                    //handle cancellation
+
             }
 
             return null;
