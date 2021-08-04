@@ -4,21 +4,81 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:IBGChatDesctop.Views"
+      xmlns:vm="clr-namespace:IBGChatDesctop.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MainPage">
 
+    <Page.DataContext>
+        <vm:MainPageViewModel/>
+    </Page.DataContext>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
+        <Image Grid.ColumnSpan="2" Source="/Images/background.png" Stretch="UniformToFill"/>
+
         <StackPanel>
-            <TextBlock Text="test"/>
+            <StackPanel.Background>
+                <LinearGradientBrush Opacity="0.6">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="Gray" Offset="1"/>
+                </LinearGradientBrush>
+            </StackPanel.Background>
+            
+            <ListBox ItemsSource="{Binding Chats}"
+                     SelectedItem="{Binding SelectedChat}"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     VerticalContentAlignment="Center">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" Foreground="White"/>
+                    
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </StackPanel>
 
-        <Frame/>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="15*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <Grid>
+                <Grid.Background>
+                    <LinearGradientBrush Opacity="0.6">
+                        <GradientStop Color="Gray" Offset="0"/>
+                        <GradientStop Color="LightSlateGray" Offset="1"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
+                <TextBlock Text="{Binding SelectedChat.Name}" Foreground="White"/>
+            </Grid>
+
+            <ListBox ItemsSource="{Binding SelectedChat.Messages}" Grid.Row="1" Background="Transparent" BorderThickness="0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Text}" Margin="5" Background="DarkSlateGray"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBox Text="{Binding SendingMessage, UpdateSourceTrigger=PropertyChanged}"/>
+                
+                <Button Grid.Column="1" Content="Send" Command="{Binding SendMessage}"/>
+            </Grid>
+        </Grid>
     </Grid>
 
     
