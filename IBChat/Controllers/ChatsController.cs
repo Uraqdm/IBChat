@@ -39,14 +39,8 @@ namespace IBChat.Controllers
         {
             _context.Chats.Add(chat);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-
-            }
+            await _context.SaveChangesAsync();
+            
             return CreatedAtAction(nameof(GetChat), new { Guid = chat.Id}, chat);
         }
 
