@@ -97,5 +97,47 @@ namespace IBGChatDesctop.Service
 
             return null;
         }
+
+        /// <summary>
+        /// Add new chat.
+        /// </summary>
+        /// <param name="chat">Add-on chat.</param>
+        /// <returns>Returns add-on chat if operation were succes. Otherwise returns null.</returns>
+        public async Task<Chat> AddChatAsync(Chat chat)
+        {
+            var requestUrl = client.BaseAddress + "Chats/";
+
+            try
+            {
+                var result = await client.PostAsJsonAsync(requestUrl, chat);
+
+                if (result.IsSuccessStatusCode)
+                {
+                    return JsonConvert.DeserializeObject(await result.Content.ReadAsStringAsync()) as Chat;
+                }
+            }
+            catch (TaskCanceledException) { }
+            return null;
+        }
+
+        /// <summary>
+        /// Add new member on chat
+        /// </summary>
+        /// <param name="member">New member</param>
+        /// <returns>Returns chat for new member if operation were succes. Otherwise returns null</returns>
+        public async Task<Chat> AddChatForUser(ChatMember member)
+        {
+            var requestUrl = client.BaseAddress + "Users/AddChat/";
+
+            try
+            {
+                var result = await client.PostAsJsonAsync(requestUrl, member);
+
+                if (result.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject(await result.Content.ReadAsStringAsync()) as Chat;
+            }
+            catch(TaskCanceledException) { }
+            return null;
+        }
     }
 }
