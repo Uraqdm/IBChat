@@ -1,6 +1,6 @@
 ﻿namespace IBChat.Domain.Models
 {
-    public class ChatMembers
+    public class ChatMember
     {
         public long Id { get; set; }
         public User User { get; set; }

@@ -105,7 +105,7 @@ namespace IBChat.Controllers
         }
 
         [HttpPost("AddChat/")]
-        public async Task<Chat> AddChatForUser(ChatMembers newMember)
+        public async Task<Chat> AddChatForUser(ChatMember newMember)
         {
             _context.ChatMembers.Add(newMember);
 
