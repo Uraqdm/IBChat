@@ -18,17 +18,17 @@ namespace IBChat.Controllers
             _context = context;
         }
 
-        [HttpGet("{Chat}")]
-        public async Task<ActionResult<IEnumerable<Message>>> GetMessages(Chat chat)
+        [HttpGet("{chatId}")]
+        public async Task<ActionResult<IEnumerable<Message>>> GetMessages(Guid chatId)
         {
-            return await _context.Messages.Where(m => m.Chat.Id == chat.Id).ToListAsync();
+            return await _context.Messages.Where(m => m.Chat.Id == chatId).ToListAsync();
         }
 
 
-        [HttpGet("{Guid}")]
-        public async Task<ActionResult<Message>> GetMessage(Guid guid)
+        [HttpGet("Id/{messageId}")]
+        public async Task<ActionResult<Message>> GetMessage(Guid messageId)
         {
-            var message =  await _context.Messages.Where(m => m.Id == guid).FirstOrDefaultAsync();
+            var message = await _context.Messages.Where(m => m.Id == messageId).FirstOrDefaultAsync();
 
             if (message == null) 
                 return NotFound();
