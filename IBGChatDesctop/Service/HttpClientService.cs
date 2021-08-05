@@ -11,9 +11,9 @@ namespace IBGChatDesctop.Service
 {
     public class HttpClientService
     {
-        private readonly HttpClient client;
+        private static readonly HttpClient client;
 
-        public HttpClientService()
+        static HttpClientService()
         {
             client = new HttpClient { Timeout = TimeSpan.FromSeconds(60), BaseAddress = new Uri("https://localhost:44396/api/") };
             client.DefaultRequestHeaders.Accept.Clear();
