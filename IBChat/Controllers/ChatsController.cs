@@ -44,12 +44,12 @@ namespace IBChat.Controllers
             return CreatedAtAction(nameof(GetChat), new { Guid = chat.Id}, chat);
         }
 
-        [HttpPut("{chatGuid}")]
-        public async Task<IActionResult> ChangeChat(Guid guid, Chat chat)
+        [HttpPut("{chatId}")]
+        public async Task<IActionResult> ChangeChat(Guid chatId, Chat chat)
         {
-            if (guid != chat.Id) return BadRequest();
+            if (chatId != chat.Id) return BadRequest();
 
-            var _chat = await _context.Chats.FindAsync(guid);
+            var _chat = await _context.Chats.FindAsync(chatId);
 
             _chat.Name = chat.Name;
             _chat.Messages = chat.Messages;
@@ -67,10 +67,10 @@ namespace IBChat.Controllers
             
         }
 
-        [HttpDelete("{chatGuid}")]
-        public async Task<IActionResult> DeleteChat(Guid guid)
+        [HttpDelete("{chatId}")]
+        public async Task<IActionResult> DeleteChat(Guid chatId)
         {
-            var chat = await _context.Chats.FindAsync(guid);
+            var chat = await _context.Chats.FindAsync(chatId);
 
             if (chat == null) return NotFound();
 

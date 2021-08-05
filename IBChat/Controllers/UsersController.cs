@@ -18,16 +18,16 @@ namespace IBChat.Controllers
             _context = context;
         }
 
-        [HttpGet("Chat/{chatGuid}")]
-        public async Task<IEnumerable<User>> GetChatUsers(Guid chatGuid)
+        [HttpGet("Chat/{chatId}")]
+        public async Task<IEnumerable<User>> GetChatUsers(Guid chatId)
         {
-            return await _context.ChatMembers.Where(member => member.Chat.Id == chatGuid).Select(member => member.User).ToListAsync();
+            return await _context.ChatMembers.Where(member => member.Chat.Id == chatId).Select(member => member.User).ToListAsync();
         }
 
-        [HttpGet("Id/{userGuid}")]
-        public async Task<ActionResult<User>> GetUser(Guid userGuid)
+        [HttpGet("Id/{userId}")]
+        public async Task<ActionResult<User>> GetUser(Guid userId)
         {
-            var user = await _context.Users.FindAsync(userGuid);
+            var user = await _context.Users.FindAsync(userId);
 
             if (user == null) return NotFound();
 
@@ -63,10 +63,10 @@ namespace IBChat.Controllers
             return CreatedAtAction(nameof(GetUser), new { Guid = user.Id }, user);
         }
 
-        [HttpDelete("{userGuid}")]
-        public async Task<IActionResult> DeleteUser(Guid guid)
+        [HttpDelete("{userId}")]
+        public async Task<IActionResult> DeleteUser(Guid userId)
         {
-            var user = await _context.Users.FindAsync(guid);
+            var user = await _context.Users.FindAsync(userId);
 
             if (user == null) return NotFound();
 
@@ -85,10 +85,10 @@ namespace IBChat.Controllers
             return NoContent();
         }
 
-        [HttpPut("{userGuid}")]
-        public async Task<IActionResult> ChangeUser(Guid userGuid, User user)
+        [HttpPut("{userId}")]
+        public async Task<IActionResult> ChangeUser(Guid userId, User user)
         {
-            if (userGuid != user.Id) return BadRequest();
+            if (userId != user.Id) return BadRequest();
 
             _context.Entry(user).State = EntityState.Modified;
 
