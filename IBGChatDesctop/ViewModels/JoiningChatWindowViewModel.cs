@@ -17,8 +17,7 @@ namespace IBGChatDesctop.ViewModels
             service = new HttpClientService();
 
             Submit = new DelegateCommand(SubmitGuid, (obj) => !string.IsNullOrEmpty(ChatGuid));
-
-            thisWindow = new JoiningInChatWindow();
+            Cancel = new DelegateCommand(CancelJoining);
         }
 
         #endregion
@@ -26,11 +25,12 @@ namespace IBGChatDesctop.ViewModels
         #region fields
 
         private readonly HttpClientService service;
-        private readonly Window thisWindow;
 
         #endregion
 
         #region props
+
+        public static Window ThisWindow { get; set; }
 
         public string ChatGuid { get; set; }
         public string ErrorMessage { get; private set; }
@@ -40,6 +40,7 @@ namespace IBGChatDesctop.ViewModels
         #region commands
 
         public ICommand Submit { get; }
+        public ICommand Cancel { get; }
 
         #endregion
 
@@ -76,7 +77,12 @@ namespace IBGChatDesctop.ViewModels
                 return;
             }
 
-            thisWindow.Close();
+            ThisWindow.Visibility = Visibility.Collapsed;
+        }
+
+        private void CancelJoining(object obj)
+        {
+            ThisWindow.Close();
         }
 
         #endregion

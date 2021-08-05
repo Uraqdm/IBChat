@@ -1,6 +1,7 @@
 ﻿using IBChat.Domain.Models;
 using IBGChatDesctop.Commands;
 using IBGChatDesctop.Service;
+using IBGChatDesctop.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -34,6 +35,8 @@ namespace IBGChatDesctop.ViewModels
         #region commands
 
         public ICommand SendMessage { get; }
+        public ICommand AddNewChat { get; }
+        public ICommand JoinChat { get; }
 
         #endregion
 
@@ -59,6 +62,28 @@ namespace IBGChatDesctop.ViewModels
                 MessageBox.Show("Unable to send message on server.");
         }
 
+        private async void AddNewChatAsync(object obj)
+        {
+            var chat = new Chat
+            {
+                Name = "test"
+            };
+
+            var newChat = await service.AddChatAsync(chat);
+
+            if (newChat != null)
+                Chats.Add(newChat);
+            else
+                MessageBox.Show("Unable to add chat.");
+        }
+
+        private void JoinChatAsync(object obj)
+        {
+            JoiningChatWindowViewModel.ThisWindow = new JoiningInChatWindow();
+            JoiningChatWindowViewModel.ThisWindow.Activate();
+            JoiningChatWindowViewModel.ThisWindow.Show();
+        }
+
         #endregion
 
         #region ctor
@@ -70,6 +95,8 @@ namespace IBGChatDesctop.ViewModels
             SetUserChats();
 
             SendMessage = new DelegateCommand(SendMessageToSelectedChatAsync, (obj) => !string.IsNullOrEmpty(SendingMessage) && SelectedChat != null);
+            AddNewChat = new DelegateCommand(AddNewChatAsync);
+            JoinChat = new DelegateCommand(JoinChatAsync);
         }
 
         #endregion
