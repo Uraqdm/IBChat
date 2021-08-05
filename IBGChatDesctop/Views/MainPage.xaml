@@ -21,27 +21,51 @@
 
         <Image Grid.ColumnSpan="2" Source="/Images/background.png" Stretch="UniformToFill"/>
 
-        <StackPanel>
-            <StackPanel.Background>
-                <LinearGradientBrush Opacity="0.6">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="Gray" Offset="1"/>
-                </LinearGradientBrush>
-            </StackPanel.Background>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="15*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Background="Black">
+                <TextBlock Text="{Binding CurrentUser.Name}" Foreground="White"/>
+            </Grid>
             
-            <ListBox ItemsSource="{Binding Chats}"
+            <StackPanel Grid.Row="1">
+                <StackPanel.Background>
+                    <LinearGradientBrush Opacity="0.6">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="Gray" Offset="1"/>
+                    </LinearGradientBrush>
+                </StackPanel.Background>
+
+                <ListBox ItemsSource="{Binding Chats}"
                      SelectedItem="{Binding SelectedChat}"
                      Background="Transparent"
                      BorderThickness="0"
                      VerticalContentAlignment="Center">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Name}" Foreground="White"/>
-                    
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </StackPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" Foreground="White"/>
+
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                
+                <Button Content="Add" Command="{Binding AddNewChat}"/>
+
+                <Button Grid.Column="1" Content="Join" Command="{Binding JoinChat}"/>
+            </Grid>
+        </Grid>
+
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
