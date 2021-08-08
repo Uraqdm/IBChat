@@ -1,6 +1,7 @@
 ﻿using IBChat.Domain.Context;
 using IBChat.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,14 +19,14 @@ namespace IBChat.Controllers
             _context = context;
         }
 
-        [HttpGet("{chatId}")]
+        [HttpGet("Chat/{chatId}")]
         public async Task<ActionResult<IEnumerable<Message>>> GetMessages(Guid chatId)
         {
             return await _context.Messages.Where(m => m.Chat.Id == chatId).ToListAsync();
         }
 
 
-        [HttpGet("Id/{messageId}")]
+        [HttpGet("{messageId}")]
         public async Task<ActionResult<Message>> GetMessage(Guid messageId)
         {
             var message = await _context.Messages.Where(m => m.Id == messageId).FirstOrDefaultAsync();
@@ -39,10 +40,18 @@ namespace IBChat.Controllers
         [HttpPost]
         public async Task<ActionResult<Message>> AddMessage(Message message)
         {
-            _context.Messages.Add(message);
+            var msg = new Message
+            {
+                Text = message.Text,
+                DateTime = DateTime.Now,
+                Chat = await _context.Chats.FindAsync(message.Chat.Id),
+                Sender = await _context.Users.FindAsync(message.Sender.Id)
+            };
+
+            _context.Messages.Add(msg);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetMessage), new {Guid = message.Id }, message);
+            return CreatedAtAction(nameof(GetMessage), new {messageId = msg.Id }, msg);
         }
 
     }
