@@ -34,9 +34,12 @@ namespace IBChat.Controllers
         {
             var user = await _context.Users.FindAsync(userId);
 
-            if (user == null) return NotFound();
+            if (user == null)
+                return NotFound();
 
-            return await _context.ChatMembers.Where(member => member.User.Id == userId).Select(member => member.Chat).ToListAsync();
+            return await _context.ChatMembers.Where(member => member.User.Id == userId)
+                .Select(member => member.Chat)
+                .ToListAsync();
         }
 
         [HttpPost]
