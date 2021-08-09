@@ -18,10 +18,15 @@ namespace IBChat.Controllers
             _context = context;
         }
 
-        [HttpGet("Id/{chatGuid}")]
-        public async Task<Chat> GetChat(Guid guid)
+        [HttpGet("{chatId}")]
+        public async Task<ActionResult<Chat>> GetChat(Guid chatId)
         {
-            return await _context.Chats.Where(c => c.Id == guid).FirstOrDefaultAsync();
+            var chat = await _context.Chats.FindAsync(chatId);
+
+            if (chat == null)
+                return NotFound();
+
+            return chat;
         }
 
         [HttpGet("UserId/{userId}")]
@@ -41,7 +46,7 @@ namespace IBChat.Controllers
 
             await _context.SaveChangesAsync();
             
-            return CreatedAtAction(nameof(GetChat), new { Guid = chat.Id}, chat);
+            return CreatedAtAction(nameof(GetChat), new { chatId = chat.Id}, chat);
         }
 
         [HttpPut("{chatId}")]
