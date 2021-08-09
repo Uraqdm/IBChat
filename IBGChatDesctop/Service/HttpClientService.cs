@@ -52,9 +52,15 @@ namespace IBGChatDesctop.Service
 
             try
             {
-                var response = await client.GetFromJsonAsync(requestUrl, typeof(IEnumerable<Chat>)) as IEnumerable<Chat>;
-
-                return response;
+                var response = await client.GetAsync(requestUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    if (!string.IsNullOrEmpty(await response.Content.ReadAsStringAsync()))
+                    {
+                        var chats = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync()) as IEnumerable<Chat>;
+                        return chats;
+                    }
+                }
             }
             catch (TaskCanceledException ex)
             {
