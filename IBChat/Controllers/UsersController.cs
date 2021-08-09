@@ -24,7 +24,7 @@ namespace IBChat.Controllers
             return await _context.ChatMembers.Where(member => member.Chat.Id == chatId).Select(member => member.User).ToListAsync();
         }
 
-        [HttpGet("Id/{userId}")]
+        [HttpGet("{userId}")]
         public async Task<ActionResult<User>> GetUser(Guid userId)
         {
             var user = await _context.Users.FindAsync(userId);
@@ -51,16 +51,9 @@ namespace IBChat.Controllers
 
             await _context.Users.AddAsync(user);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
+            await _context.SaveChangesAsync();
 
-            }
-
-            return CreatedAtAction(nameof(GetUser), new { Guid = user.Id }, user);
+            return CreatedAtAction(nameof(GetUser), new { userId = user.Id }, user);
         }
 
         [HttpDelete("{userId}")]

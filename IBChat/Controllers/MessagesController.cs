@@ -29,7 +29,7 @@ namespace IBChat.Controllers
         [HttpGet("{messageId}")]
         public async Task<ActionResult<Message>> GetMessage(Guid messageId)
         {
-            var message = await _context.Messages.Where(m => m.Id == messageId).FirstOrDefaultAsync();
+            var message = await _context.Messages.FindAsync(messageId);
 
             if (message == null) 
                 return NotFound();
