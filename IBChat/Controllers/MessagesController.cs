@@ -1,7 +1,6 @@
 ﻿using IBChat.Domain.Context;
 using IBChat.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
