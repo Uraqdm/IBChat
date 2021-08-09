@@ -52,10 +52,9 @@ namespace IBGChatDesctop.Service
 
             try
             {
-                var response = await client.GetFromJsonAsync(requestUrl, typeof(IEnumerable<Chat>));
-                var chats = response as IEnumerable<Chat>;
+                var response = await client.GetFromJsonAsync(requestUrl, typeof(IEnumerable<Chat>)) as IEnumerable<Chat>;
 
-                return chats;
+                return response;
             }
             catch (TaskCanceledException ex)
             {
@@ -64,8 +63,8 @@ namespace IBGChatDesctop.Service
                     //Set timeout error here
                 }
                 //Set server error here
-                return null;
             }
+            return null;
         }
 
         /// <summary>
