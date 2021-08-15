@@ -45,8 +45,16 @@ namespace IBChat.Controllers
         [HttpPost("{ownerId}")]
         public async Task<IActionResult> CreateChat(Guid ownerId, Chat chat)
         {
+            if (chat == null)
+                return BadRequest();
+
+            var owner = await _context.Users.FindAsync(ownerId);
+
+            if (owner == null)
+                return NotFound();
+
             _context.Chats.Add(chat);
-            _context.ChatMembers.Add(new ChatMember { Chat = await _context.Chats.FindAsync(chat.Id), User = await _context.Users.FindAsync(ownerId) }); 
+            _context.ChatMembers.Add(new ChatMember { Chat = await _context.Chats.FindAsync(chat.Id), User = owner }); 
 
             await _context.SaveChangesAsync();
             
