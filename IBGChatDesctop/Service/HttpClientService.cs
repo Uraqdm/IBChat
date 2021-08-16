@@ -53,13 +53,11 @@ namespace IBGChatDesctop.Service
             try
             {
                 var response = await client.GetAsync(requestUrl);
-                if (response.IsSuccessStatusCode)
+                string content;
+                if (response.IsSuccessStatusCode && !string.IsNullOrEmpty(content = await response.Content.ReadAsStringAsync()))
                 {
-                    if (!string.IsNullOrEmpty(await response.Content.ReadAsStringAsync()))
-                    {
-                        var chats = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync()) as IEnumerable<Chat>;
-                        return chats;
-                    }
+                    var chats = JsonConvert.DeserializeObject(content, typeof(IEnumerable<Chat>)) as IEnumerable<Chat>;
+                    return chats;
                 }
             }
             catch (TaskCanceledException ex)
@@ -108,9 +106,9 @@ namespace IBGChatDesctop.Service
         /// </summary>
         /// <param name="chat">Add-on chat.</param>
         /// <returns>Returns add-on chat if operation were succes. Otherwise returns null.</returns>
-        public async Task<Chat> AddChatAsync(Chat chat)
+        public async Task<Chat> AddChatAsync(Guid ownerId, Chat chat)
         {
-            var requestUrl = client.BaseAddress + "Chats/";
+            var requestUrl = client.BaseAddress + $"Chats/{ownerId}";
 
             try
             {
