@@ -14,6 +14,7 @@ namespace IBGChatDesctop.ViewModels
         #region fields
 
         private readonly HttpClientService service;
+        private Chat selectedChat;
 
         #endregion
 
@@ -22,7 +23,16 @@ namespace IBGChatDesctop.ViewModels
         /// <summary>
         /// Current chat, selected by user.
         /// </summary>
-        public Chat SelectedChat { get; set; }
+        public Chat SelectedChat
+        {
+            get => selectedChat;
+            set
+            {
+                selectedChat = value;
+                SetSelectedChatsMessages();
+                OnPropertyChanged();
+            }
+        }
 
         public static User CurrentUser { get; set; }
 
@@ -44,12 +54,12 @@ namespace IBGChatDesctop.ViewModels
 
         private async void SendMessageToSelectedChatAsync(object obj)
         {
-            var msg = new Message 
-            { 
+            var msg = new Message
+            {
                 Chat = SelectedChat,
                 DateTime = DateTime.Now,
                 Sender = CurrentUser,
-                Text = SendingMessage 
+                Text = SendingMessage
             };
 
             SendingMessage = null;
@@ -58,7 +68,7 @@ namespace IBGChatDesctop.ViewModels
 
             if (sendedMsg != null)
                 SelectedChat.Messages.Add(sendedMsg);
-            else 
+            else
                 MessageBox.Show("Unable to send message on server.");
         }
 
@@ -70,7 +80,7 @@ namespace IBGChatDesctop.ViewModels
                 Name = "test"
             };
 
-            if ((newChat = await service.AddChatAsync(CurrentUser.Id,chat)) != null)
+            if ((newChat = await service.AddChatAsync(CurrentUser.Id, chat)) != null)
                 Chats.Add(newChat);
             else
                 MessageBox.Show("Unable to add chat.");
@@ -110,6 +120,16 @@ namespace IBGChatDesctop.ViewModels
                 Chats = new ObservableCollection<Chat>(userChats);
 
             else Chats = new ObservableCollection<Chat>();
+        }
+
+        private async void SetSelectedChatsMessages()
+        {
+            var messages = await service.GetChatMessagesAsync(SelectedChat.Id);
+
+            if (messages != null)
+                SelectedChat.Messages = new System.Collections.Generic.List<Message>(messages);
+            else
+                SelectedChat.Messages = new();
         }
 
         #endregion
