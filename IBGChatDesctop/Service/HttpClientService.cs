@@ -148,7 +148,7 @@ namespace IBGChatDesctop.Service
         /// </summary>
         /// <param name="chatId">Chat id</param>
         /// <returns>If operation were success returns sequence of messages. Otherwise returns null.</returns>
-        public async Task<IEnumerable<Message>> GetChatMessages(Guid chatId)
+        public async Task<IEnumerable<Message>> GetChatMessagesAsync(Guid chatId)
         {
             var requestUrl = client.BaseAddress + $"Messages/Chat/{chatId}";
 
