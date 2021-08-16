@@ -142,5 +142,29 @@ namespace IBGChatDesctop.Service
             catch(TaskCanceledException) { }
             return null;
         }
+
+        /// <summary>
+        /// Gets chat messages from server async.
+        /// </summary>
+        /// <param name="chatId">Chat id</param>
+        /// <returns>If operation were success returns sequence of messages. Otherwise returns null.</returns>
+        public async Task<IEnumerable<Message>> GetChatMessages(Guid chatId)
+        {
+            var requestUrl = client.BaseAddress + $"Messages/Chat/{chatId}";
+
+            var respose = await client.GetAsync(requestUrl);
+
+            if (respose.IsSuccessStatusCode)
+            {
+                var content = await respose.Content.ReadAsStringAsync();
+                if (!string.IsNullOrEmpty(content))
+                {
+                    var result = JsonConvert.DeserializeObject(content, typeof(IEnumerable<Message>)) as IEnumerable<Message>;
+                    return result;
+                }
+            }
+
+            return null;
+        }
     }
 }
