@@ -64,14 +64,13 @@ namespace IBGChatDesctop.ViewModels
 
         private async void AddNewChatAsync(object obj)
         {
+            Chat newChat;
             var chat = new Chat
             {
                 Name = "test"
             };
 
-            var newChat = await service.AddChatAsync(chat);
-
-            if (newChat != null)
+            if ((newChat = await service.AddChatAsync(CurrentUser.Id,chat)) != null)
                 Chats.Add(newChat);
             else
                 MessageBox.Show("Unable to add chat.");
