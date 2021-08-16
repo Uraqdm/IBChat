@@ -88,7 +88,7 @@ namespace IBGChatDesctop.Service
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync()) as Message;
+                    return JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync(), typeof(Message)) as Message;
                 }
             }
             catch (TaskCanceledException ex)
