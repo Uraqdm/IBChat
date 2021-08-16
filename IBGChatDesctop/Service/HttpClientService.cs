@@ -11,7 +11,13 @@ namespace IBGChatDesctop.Service
 {
     public class HttpClientService
     {
+        #region fields
+
         private static readonly HttpClient client;
+
+        #endregion
+
+        #region ctor
 
         static HttpClientService()
         {
@@ -20,26 +26,9 @@ namespace IBGChatDesctop.Service
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        /// <summary>
-        /// Authorizates user by given email and password
-        /// </summary>
-        /// <param name="email">Email</param>
-        /// <param name="psswd">Password</param>
-        /// <returns>User with given email and password if operation were succes. Otherwise returns null</returns>
-        public async Task<User> AuthorizateUserAsync(string email, string psswd)
-        {
-            var requestUri = client.BaseAddress + "Users/Auth";
-            HttpResponseMessage response = new HttpResponseMessage() ;
+        #endregion
 
-            response = await client.PutAsJsonAsync(requestUri, new { Email = email, Password = psswd });
-           
-            if (response.IsSuccessStatusCode)
-            {
-                var user = JsonConvert.DeserializeObject<User>(await response.Content.ReadAsStringAsync());
-                return user;
-            }
-            else return null;
-        }
+        #region Get
 
         /// <summary>
         /// Get user chats from server async.
@@ -50,26 +39,51 @@ namespace IBGChatDesctop.Service
         {
             var requestUrl = client.BaseAddress + $"Chats/UserId/{userId}";
 
+            return await GetDataAsync<IEnumerable<Chat>>(requestUrl);
+        }
+
+        /// <summary>
+        /// Gets chat messages from server async.
+        /// </summary>
+        /// <param name="chatId">Chat id</param>
+        /// <returns>If operation were success returns sequence of messages. Otherwise returns null.</returns>
+        public async Task<IEnumerable<Message>> GetChatMessagesAsync(Guid chatId)
+        {
+            var requestUrl = client.BaseAddress + $"Messages/Chat/{chatId}";
+
+            return await GetDataAsync<IEnumerable<Message>>(requestUrl);
+        }
+
+        /// <summary>
+        /// Get generic data from server async
+        /// </summary>
+        /// <typeparam name="T">Type of requiered data</typeparam>
+        /// <param name="requestUrl">Request url</param>
+        /// <returns>Data type of T</returns>
+        private async Task<T> GetDataAsync<T>(string requestUrl) where T : class
+        {
             try
             {
                 var response = await client.GetAsync(requestUrl);
-                string content;
-                if (response.IsSuccessStatusCode && !string.IsNullOrEmpty(content = await response.Content.ReadAsStringAsync()))
+
+                if (response.IsSuccessStatusCode)
                 {
-                    var chats = JsonConvert.DeserializeObject(content, typeof(IEnumerable<Chat>)) as IEnumerable<Chat>;
-                    return chats;
+                    var content = await response.Content.ReadAsStringAsync();
+                    if (!string.IsNullOrEmpty(content))
+                    {
+                        var result = JsonConvert.DeserializeObject(content, typeof(T)) as T;
+                        return result;
+                    }
                 }
             }
-            catch (TaskCanceledException ex)
-            {
-                if (ex.CancellationToken.IsCancellationRequested)
-                {
-                    //Set timeout error here
-                }
-                //Set server error here
-            }
+            catch (TaskCanceledException) { }
+
             return null;
         }
+
+        #endregion
+
+        #region Post
 
         /// <summary>
         /// Sends message on server async.
@@ -82,23 +96,7 @@ namespace IBGChatDesctop.Service
 
             if (message == null) return null;
 
-            try
-            {
-                var response = await client.PostAsJsonAsync(requestUrl, message);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync(), typeof(Message)) as Message;
-                }
-            }
-            catch (TaskCanceledException ex)
-            {
-                if (ex.CancellationToken.IsCancellationRequested) { }
-                    //handle cancellation
-
-            }
-
-            return null;
+            return await PostDataAsync<Message>(requestUrl, message);
         }
 
         /// <summary>
@@ -110,17 +108,7 @@ namespace IBGChatDesctop.Service
         {
             var requestUrl = client.BaseAddress + $"Chats/{ownerId}";
 
-            try
-            {
-                var result = await client.PostAsJsonAsync(requestUrl, chat);
-
-                if (result.IsSuccessStatusCode)
-                {
-                    return JsonConvert.DeserializeObject(await result.Content.ReadAsStringAsync()) as Chat;
-                }
-            }
-            catch (TaskCanceledException) { }
-            return null;
+            return await PostDataAsync<Chat>(requestUrl, chat);
         }
 
         /// <summary>
@@ -132,39 +120,46 @@ namespace IBGChatDesctop.Service
         {
             var requestUrl = client.BaseAddress + "Users/AddChat/";
 
+            return await PostDataAsync<Chat>(requestUrl, member);
+        }
+
+        private async Task<T> PostDataAsync<T>(string requestUrl, object data) where T : class
+        {
             try
             {
-                var result = await client.PostAsJsonAsync(requestUrl, member);
+                var response = await client.PostAsJsonAsync(requestUrl, data);
 
-                if (result.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject(await result.Content.ReadAsStringAsync()) as Chat;
-            }
-            catch(TaskCanceledException) { }
-            return null;
-        }
-
-        /// <summary>
-        /// Gets chat messages from server async.
-        /// </summary>
-        /// <param name="chatId">Chat id</param>
-        /// <returns>If operation were success returns sequence of messages. Otherwise returns null.</returns>
-        public async Task<IEnumerable<Message>> GetChatMessagesAsync(Guid chatId)
-        {
-            var requestUrl = client.BaseAddress + $"Messages/Chat/{chatId}";
-
-            var respose = await client.GetAsync(requestUrl);
-
-            if (respose.IsSuccessStatusCode)
-            {
-                var content = await respose.Content.ReadAsStringAsync();
-                if (!string.IsNullOrEmpty(content))
+                if (response.IsSuccessStatusCode)
                 {
-                    var result = JsonConvert.DeserializeObject(content, typeof(IEnumerable<Message>)) as IEnumerable<Message>;
-                    return result;
+                    return JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync()) as T;
                 }
             }
+            catch (TaskCanceledException) { }
 
             return null;
         }
+
+        #endregion
+
+        /// <summary>
+        /// Authorizates user by given email and password
+        /// </summary>
+        /// <param name="email">Email</param>
+        /// <param name="psswd">Password</param>
+        /// <returns>User with given email and password if operation were succes. Otherwise returns null</returns>
+        public async Task<User> AuthorizateUserAsync(string email, string psswd)
+        {
+            var requestUri = client.BaseAddress + "Users/Auth";
+
+            var response = await client.PutAsJsonAsync(requestUri, new { Email = email, Password = psswd });
+           
+            if (response.IsSuccessStatusCode)
+            {
+                var user = JsonConvert.DeserializeObject<User>(await response.Content.ReadAsStringAsync());
+                return user;
+            }
+            else return null;
+        }
+
     }
 }
