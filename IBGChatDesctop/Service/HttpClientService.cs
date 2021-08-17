@@ -108,7 +108,9 @@ namespace IBGChatDesctop.Service
         {
             var requestUrl = client.BaseAddress + $"Chats/{ownerId}";
 
-            return await PostDataAsync<Chat>(requestUrl, chat);
+            var result = await PostDataAsync<Chat>(requestUrl, chat);
+
+            return result;
         }
 
         /// <summary>
@@ -131,7 +133,7 @@ namespace IBGChatDesctop.Service
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync()) as T;
+                    return JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync(), typeof(T)) as T;
                 }
             }
             catch (TaskCanceledException) { }
