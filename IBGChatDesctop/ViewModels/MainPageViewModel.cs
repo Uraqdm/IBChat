@@ -47,6 +47,7 @@ namespace IBGChatDesctop.ViewModels
         public ICommand SendMessage { get; }
         public ICommand AddNewChat { get; }
         public ICommand JoinChat { get; }
+        public ICommand DeleteChat { get; }
 
         #endregion
 
@@ -74,13 +75,14 @@ namespace IBGChatDesctop.ViewModels
 
         private async void AddNewChatAsync(object obj)
         {
-            Chat newChat;
             var chat = new Chat
             {
                 Name = "test"
             };
 
-            if ((newChat = await service.AddChatAsync(CurrentUser.Id, chat)) != null)
+            var newChat = await service.AddChatAsync(CurrentUser.Id, chat);
+
+            if (newChat != null)
                 Chats.Add(newChat);
             else
                 MessageBox.Show("Unable to add chat.");
@@ -91,6 +93,12 @@ namespace IBGChatDesctop.ViewModels
             JoiningChatWindowViewModel.ThisWindow = new JoiningInChatWindow();
             JoiningChatWindowViewModel.ThisWindow.Activate();
             JoiningChatWindowViewModel.ThisWindow.Show();
+        }
+
+        private async void DeleteChatAsync(object obj)
+        {
+            await service.DeleteChat(SelectedChat.Id);
+            Chats.Remove(SelectedChat);
         }
 
         #endregion

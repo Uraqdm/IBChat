@@ -161,5 +161,13 @@ namespace IBGChatDesctop.Service
             else return null;
         }
 
+        public async Task<bool> DeleteChat(Guid chatId)
+        {
+            var requestUrl = client.BaseAddress + $"Chats/{chatId}";
+
+            var result = await client.DeleteAsync(requestUrl);
+
+            return result.IsSuccessStatusCode;
+        }
     }
 }
