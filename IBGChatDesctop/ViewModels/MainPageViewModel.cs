@@ -114,6 +114,7 @@ namespace IBGChatDesctop.ViewModels
             SendMessage = new DelegateCommand(SendMessageToSelectedChatAsync, (obj) => !string.IsNullOrEmpty(SendingMessage) && SelectedChat != null);
             AddNewChat = new DelegateCommand(AddNewChatAsync);
             JoinChat = new DelegateCommand(JoinChatAsync);
+            DeleteChat = new DelegateCommand(DeleteChatAsync, (obj) => SelectedChat != null);
         }
 
         #endregion
