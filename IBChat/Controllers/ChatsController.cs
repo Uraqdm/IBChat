@@ -93,6 +93,11 @@ namespace IBChat.Controllers
 
             _context.Chats.Remove(chat);
 
+            foreach (var member in _context.ChatMembers.Where(m => m.Chat.Id == chatId))
+            {
+                _context.ChatMembers.Remove(member);
+            }
+
             try
             {
                 await _context.SaveChangesAsync();
