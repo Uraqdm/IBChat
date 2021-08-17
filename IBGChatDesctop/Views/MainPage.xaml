@@ -81,7 +81,15 @@
                         <GradientStop Color="LightSlateGray" Offset="1"/>
                     </LinearGradientBrush>
                 </Grid.Background>
-                <TextBlock Text="{Binding SelectedChat.Name}" Foreground="White"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="8*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding SelectedChat.Name}" Foreground="White" Margin="5"/>
+                    
+                    <Button Background="Red" Foreground="white" Content="Delete" Command="{Binding DeleteChat}" Margin="5" Grid.Column="1"/>
+                </Grid>
             </Grid>
 
             <ListBox ItemsSource="{Binding SelectedChat.Messages}" Grid.Row="1" Background="Transparent" BorderThickness="0">
