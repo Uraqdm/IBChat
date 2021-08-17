@@ -133,6 +133,8 @@ namespace IBGChatDesctop.ViewModels
 
         private async void SetSelectedChatsMessages()
         {
+            if (SelectedChat == null) return;
+
             var messages = await service.GetChatMessagesAsync(SelectedChat.Id);
 
             if (messages != null)
