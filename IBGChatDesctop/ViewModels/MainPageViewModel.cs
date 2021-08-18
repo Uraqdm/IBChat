@@ -36,7 +36,7 @@ namespace IBGChatDesctop.ViewModels
 
         public static User CurrentUser { get; set; }
 
-        public ObservableCollection<Chat> Chats { get; private set; }
+        public static ObservableCollection<Chat> Chats { get; private set; }
 
         public string SendingMessage { get; set; }
 
@@ -73,19 +73,11 @@ namespace IBGChatDesctop.ViewModels
                 MessageBox.Show("Unable to send message on server.");
         }
 
-        private async void AddNewChatAsync(object obj)
+        private void AddNewChatAsync(object obj)
         {
-            var chat = new Chat
-            {
-                Name = "test"
-            };
-
-            var newChat = await service.AddChatAsync(CurrentUser.Id, chat);
-
-            if (newChat != null)
-                Chats.Add(newChat);
-            else
-                MessageBox.Show("Unable to add chat.");
+            AddingChatWindowViewModel.AddingChatWindow = new();
+            AddingChatWindowViewModel.AddingChatWindow.Activate();
+            AddingChatWindowViewModel.AddingChatWindow.Show();
         }
 
         private void JoinChatAsync(object obj)
