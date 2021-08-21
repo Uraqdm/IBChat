@@ -6,11 +6,19 @@ using System.Windows.Input;
 
 namespace IBGChatDesctop.ViewModels
 {
+
+
     public class AddingChatWindowViewModel : BaseViewModel
     {
         #region fields
 
         private readonly HttpClientService service;
+
+        #endregion
+
+        #region events
+
+        public static event ChatAdded ChatAdded;
 
         #endregion
 
@@ -54,7 +62,7 @@ namespace IBGChatDesctop.ViewModels
 
             else
             {
-                MainPageViewModel.Chats.Add(result);
+                ChatAdded?.Invoke(this, result);
                 AddingChatWindow.Close();
             }
                

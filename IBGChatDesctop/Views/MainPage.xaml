@@ -83,12 +83,18 @@
                 </Grid.Background>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="8*"/>
+                        <ColumnDefinition Width="7*"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="{Binding SelectedChat.Name}" Foreground="White" Margin="5"/>
                     
-                    <Button Background="Red" Foreground="white" Content="Delete" Command="{Binding DeleteChat}" Margin="5" Grid.Column="1"/>
+                    <TextBlock Text="{Binding SelectedChat.Name}" Foreground="White" Margin="5"/>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button Content="Share" Command="{Binding ShareChat}" Background="Transparent" Foreground="White"/>
+                        <Separator />
+                        <Button Background="Transparent" Foreground="white" Content="Delete" Command="{Binding DeleteChat}"  />
+                    </StackPanel>
+                    
                 </Grid>
             </Grid>
 

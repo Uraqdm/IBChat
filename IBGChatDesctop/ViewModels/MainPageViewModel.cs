@@ -36,7 +36,7 @@ namespace IBGChatDesctop.ViewModels
 
         public static User CurrentUser { get; set; }
 
-        public static ObservableCollection<Chat> Chats { get; private set; }
+        public ObservableCollection<Chat> Chats { get; private set; }
 
         public string SendingMessage { get; set; }
 
@@ -48,8 +48,52 @@ namespace IBGChatDesctop.ViewModels
         public ICommand AddNewChat { get; }
         public ICommand JoinChat { get; }
         public ICommand DeleteChat { get; }
+        public ICommand ShareChat { get; }
 
         #endregion
+
+        #region ctor
+
+        public MainPageViewModel()
+        {
+            service = new HttpClientService();
+
+            SetUserChats();
+
+            SendMessage = new DelegateCommand(SendMessageToSelectedChatAsync, (obj) => !string.IsNullOrEmpty(SendingMessage) && SelectedChat != null);
+            AddNewChat = new DelegateCommand(AddNewChatAsync);
+            JoinChat = new DelegateCommand(JoinChatAsync);
+            DeleteChat = new DelegateCommand(DeleteChatAsync, (obj) => SelectedChat != null);
+            ShareChat = new DelegateCommand(ShareSelectedChat, (obj) => SelectedChat != null);
+
+            AddingChatWindowViewModel.ChatAdded += OnChatAdded;
+        }
+
+        #endregion
+
+        #region methods
+
+        private async void SetUserChats()
+        {
+            var userChats = await service.GetUserChatsAsync(CurrentUser.Id);
+
+            if (userChats != null)
+                Chats = new ObservableCollection<Chat>(userChats);
+
+            else Chats = new ObservableCollection<Chat>();
+        }
+
+        private async void SetSelectedChatsMessages()
+        {
+            if (SelectedChat == null) return;
+
+            var messages = await service.GetChatMessagesAsync(SelectedChat.Id);
+
+            if (messages != null)
+                SelectedChat.Messages = new System.Collections.Generic.List<Message>(messages);
+            else
+                SelectedChat.Messages = new();
+        }
 
         #region command methods
 
@@ -93,47 +137,22 @@ namespace IBGChatDesctop.ViewModels
             Chats.Remove(SelectedChat);
         }
 
-        #endregion
-
-        #region ctor
-
-        public MainPageViewModel()
+        private void ShareSelectedChat(object obj)
         {
-            service = new HttpClientService();
-
-            SetUserChats();
-
-            SendMessage = new DelegateCommand(SendMessageToSelectedChatAsync, (obj) => !string.IsNullOrEmpty(SendingMessage) && SelectedChat != null);
-            AddNewChat = new DelegateCommand(AddNewChatAsync);
-            JoinChat = new DelegateCommand(JoinChatAsync);
-            DeleteChat = new DelegateCommand(DeleteChatAsync, (obj) => SelectedChat != null);
+            Clipboard.SetText(SelectedChat.Id.ToString());
+            MessageBox.Show("Link copied to clipboard.");
         }
 
         #endregion
 
-        #region methods
+        #region event methods
 
-        private async void SetUserChats()
+        public void OnChatAdded(object sender, Chat addedChat)
         {
-            var userChats = await service.GetUserChatsAsync(CurrentUser.Id);
-
-            if (userChats != null)
-                Chats = new ObservableCollection<Chat>(userChats);
-
-            else Chats = new ObservableCollection<Chat>();
+            Chats.Add(addedChat);
         }
 
-        private async void SetSelectedChatsMessages()
-        {
-            if (SelectedChat == null) return;
-
-            var messages = await service.GetChatMessagesAsync(SelectedChat.Id);
-
-            if (messages != null)
-                SelectedChat.Messages = new System.Collections.Generic.List<Message>(messages);
-            else
-                SelectedChat.Messages = new();
-        }
+        #endregion
 
         #endregion
     }
