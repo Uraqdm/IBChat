@@ -98,7 +98,7 @@
                 </Grid>
             </Grid>
 
-            <ListBox ItemsSource="{Binding SelectedChat.Messages}" Grid.Row="1" Background="Transparent" BorderThickness="0">
+            <ListBox ItemsSource="{Binding SelectedChatMessages}" Grid.Row="1" Background="Transparent" BorderThickness="0">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Text}" Margin="5" Background="DarkSlateGray"/>

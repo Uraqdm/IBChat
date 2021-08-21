@@ -2,7 +2,6 @@
 using IBGChatDesctop.Commands;
 using IBGChatDesctop.Service;
 using IBGChatDesctop.Views;
-using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
@@ -37,6 +36,8 @@ namespace IBGChatDesctop.ViewModels
         public static User CurrentUser { get; set; }
 
         public ObservableCollection<Chat> Chats { get; private set; }
+
+        public ObservableCollection<Message> SelectedChatMessages { get; private set; }
 
         public string SendingMessage { get; set; }
 
@@ -90,9 +91,9 @@ namespace IBGChatDesctop.ViewModels
             var messages = await service.GetChatMessagesAsync(SelectedChat.Id);
 
             if (messages != null)
-                SelectedChat.Messages = new System.Collections.Generic.List<Message>(messages);
+                SelectedChatMessages = new(messages);
             else
-                SelectedChat.Messages = new();
+                SelectedChatMessages = new();
         }
 
         #region command methods
@@ -101,9 +102,8 @@ namespace IBGChatDesctop.ViewModels
         {
             var msg = new Message
             {
-                Chat = SelectedChat,
-                DateTime = DateTime.Now,
-                Sender = CurrentUser,
+                ChatId = SelectedChat.Id,
+                SenderId = CurrentUser.Id,
                 Text = SendingMessage
             };
 
@@ -112,7 +112,7 @@ namespace IBGChatDesctop.ViewModels
             var sendedMsg = await service.SendMessageAsync(msg);
 
             if (sendedMsg != null)
-                SelectedChat.Messages.Add(sendedMsg);
+                SelectedChatMessages.Add(sendedMsg);
             else
                 MessageBox.Show("Unable to send message on server.");
         }

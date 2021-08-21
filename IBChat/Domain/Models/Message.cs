@@ -15,9 +15,11 @@ namespace IBChat.Domain.Models
         public DateTime DateTime { get; set; }
 
         [Required]
+        public Guid SenderId { get; set; }
         public User Sender { get; set; }
 
         [Required]
+        public Guid ChatId { get; set; }
         public Chat Chat { get; set; }
     }
 }

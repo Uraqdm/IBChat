@@ -96,7 +96,9 @@ namespace IBGChatDesctop.Service
 
             if (message == null) return null;
 
-            return await PostDataAsync<Message>(requestUrl, message);
+            var result = await PostDataAsync<Message>(requestUrl, message);
+
+            return result;
         }
 
         /// <summary>

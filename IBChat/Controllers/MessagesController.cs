@@ -43,8 +43,8 @@ namespace IBChat.Controllers
             {
                 Text = message.Text,
                 DateTime = DateTime.Now,
-                Chat = await _context.Chats.FindAsync(message.Chat.Id),
-                Sender = await _context.Users.FindAsync(message.Sender.Id)
+                ChatId = message.ChatId,
+                SenderId = message.SenderId
             };
 
             _context.Messages.Add(msg);
