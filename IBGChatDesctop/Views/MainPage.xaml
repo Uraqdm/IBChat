@@ -16,6 +16,7 @@
 
     <Page.Resources>
         <conv:ValueToVisibilityConverter x:Key="converter"/>
+        <conv:CurrentUserToAlignConverter x:Key="alconv"/>
     </Page.Resources>
     
     <Grid>
@@ -103,10 +104,20 @@
                 </Grid>
             </Grid>
 
-            <ListBox ItemsSource="{Binding SelectedChatMessages}" Grid.Row="1" Background="Transparent" BorderThickness="0">
+            <ListBox ItemsSource="{Binding SelectedChatMessages}" Grid.Row="1" Background="Transparent" BorderThickness="0" x:Name="messagesContainer"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="False" HorizontalContentAlignment="Stretch">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Text}" Margin="5" Background="DarkSlateGray"/>
+                        <DockPanel LastChildFill="False">
+                            <Border CornerRadius="10" Background="Gray" Padding="5" Opacity="0.9"
+                                    DockPanel.Dock="{Binding SenderId, Converter={StaticResource alconv}}" MaxWidth="750">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding SenderId}" Foreground="White" FontSize="14"/>
+                                    <TextBlock Text="{Binding Text}" Foreground="White" FontSize="{StaticResource Small}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding DateTime}" Foreground="LightGray" FontSize="12" Margin="1"/>
+                                </StackPanel>
+                            </Border>
+                        </DockPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -116,9 +127,16 @@
                     <ColumnDefinition Width="3*"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                
-                <TextBox Text="{Binding SendingMessage, UpdateSourceTrigger=PropertyChanged}"/>
-                
+
+                <TextBox Text="{Binding SendingMessage, UpdateSourceTrigger=PropertyChanged}" Foreground="White" TextWrapping="Wrap">
+                    <TextBox.Background>
+                        <LinearGradientBrush Opacity="0.6">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="Gray" Offset="1"/>
+                        </LinearGradientBrush>
+                    </TextBox.Background>
+                </TextBox>
+
                 <Button Grid.Column="1" Content="Send" Command="{Binding SendMessage}" IsDefault="True"/>
             </Grid>
         </Grid>
