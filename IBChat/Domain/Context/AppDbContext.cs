@@ -11,5 +11,6 @@ namespace IBChat.Domain.Context
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<ChatMember> ChatMembers { get; set; }
+        public DbSet<Token> Tokens { get; set; }
     }
 }

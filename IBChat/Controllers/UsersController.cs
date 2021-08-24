@@ -37,7 +37,7 @@ namespace IBChat.Controllers
         [HttpPut("Auth/")]
         public async Task<ActionResult<User>> Authorize(Token token)
         {
-            var user = await _context.Users.Where(u => u.Email == token.Email && u.Password == token.Password).FirstOrDefaultAsync();
+            var user = await _context.Tokens.Where(t => t.Email == token.Email && t.Password == token.Password).Select(t => t.User).FirstOrDefaultAsync();
 
             if (user == null) return NotFound();
 
@@ -95,16 +95,6 @@ namespace IBChat.Controllers
             }
 
             return CreatedAtAction(nameof(GetUser), new { Guid = user.Id }, user);
-        }
-
-        [HttpPost("AddChat/")]
-        public async Task<Chat> AddChatForUser(ChatMember newMember)
-        {
-            _context.ChatMembers.Add(newMember);
-
-            await _context.SaveChangesAsync();
-
-            return await _context.Chats.FindAsync(newMember.Chat.Id);
         }
     }
 }

@@ -122,7 +122,7 @@ namespace IBGChatDesctop.Service
         /// <returns>Returns chat for new member if operation were succes. Otherwise returns null</returns>
         public async Task<Chat> AddChatForUserAsync(ChatMember member)
         {
-            var requestUrl = client.BaseAddress + "Users/AddChat/";
+            var requestUrl = client.BaseAddress + "Chats/AddMember/";
 
             return await PostDataAsync<Chat>(requestUrl, member);
         }

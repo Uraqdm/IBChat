@@ -110,5 +110,18 @@ namespace IBChat.Controllers
 
             return NoContent();
         }
+
+        [HttpPost("AddMember/")]
+        public async Task<IActionResult> AddChatForUser(ChatMember newMember)
+        {
+            if (newMember == null)
+                return BadRequest();
+
+            _context.ChatMembers.Add(newMember);
+
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetChat), new { chatId = newMember.Chat.Id }, newMember.Chat);
+        }
     }
 }
