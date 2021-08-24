@@ -44,6 +44,9 @@ namespace IBChat.Controllers
         [HttpPut("Auth/")]
         public async Task<ActionResult<User>> Authorize(Token token)
         {
+            if(token == null)
+                return BadRequest();
+
             var user = await _context.Tokens.Where(t => t.Email == token.Email && t.Password == token.Password).Select(t => t.User).FirstOrDefaultAsync();
 
             if (user == null) return NotFound();
