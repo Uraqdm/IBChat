@@ -119,7 +119,7 @@
                 
                 <TextBox Text="{Binding SendingMessage, UpdateSourceTrigger=PropertyChanged}"/>
                 
-                <Button Grid.Column="1" Content="Send" Command="{Binding SendMessage}"/>
+                <Button Grid.Column="1" Content="Send" Command="{Binding SendMessage}" IsDefault="True"/>
             </Grid>
         </Grid>
     </Grid>

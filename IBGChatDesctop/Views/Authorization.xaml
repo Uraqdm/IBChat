@@ -34,12 +34,12 @@
                 <TextBlock Text="IBChat" Foreground="White" Margin="5, 25" Style="{StaticResource ResourceKey=Header}" TextAlignment="Center"/>
 
                 <TextBlock Text="Email" Style="{StaticResource TextBoxHeader}" Foreground="White" Margin="5"/>
-                <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" FontSize="14" Margin="15, 5"/>
+                <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Margin="15, 5"/>
 
                 <TextBlock Text="Pasword" Style="{StaticResource TextBoxHeader}" Foreground="White" Margin="5"/>
-                <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" FontSize="14" Margin="15, 5"/>
+                <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" Margin="15, 5"/>
 
-                <Button Content="Submit" Command="{Binding Authorizate}" Margin="25" FontSize="24"/>
+                <Button Content="Submit" Command="{Binding Authorizate}" Margin="25" IsDefault="True"/>
             </StackPanel>
         </Grid>
         
