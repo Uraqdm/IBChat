@@ -8,7 +8,6 @@ namespace IBChat.Domain.Models
         [Required]
         public Guid Id { get; set; }
 
-        [Required]
         public User User { get; set; }
 
         [Required]
