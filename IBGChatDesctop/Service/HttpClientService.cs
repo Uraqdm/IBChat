@@ -37,7 +37,7 @@ namespace IBGChatDesctop.Service
         /// <returns>Return user chats if operation were success or user has any chat. Otherwise return null.</returns>
         public async Task<IEnumerable<Chat>> GetUserChatsAsync(Guid userId)
         {
-            var requestUrl = client.BaseAddress + $"Chats/UserId/{userId}";
+            var requestUrl = client.BaseAddress + $"Users/UserChats/{userId}";
 
             return await GetDataAsync<IEnumerable<Chat>>(requestUrl);
         }

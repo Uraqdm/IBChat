@@ -29,17 +29,10 @@ namespace IBChat.Controllers
             return chat;
         }
 
-        [HttpGet("UserId/{userId}")]
-        public async Task<ActionResult<IEnumerable<Chat>>> GetUserChats(Guid userId)
+        [HttpGet("Members/{chatId}")]
+        public async Task<IEnumerable<User>> GetChatUsers(Guid chatId)
         {
-            var user = await _context.Users.FindAsync(userId);
-
-            if (user == null)
-                return NotFound();
-
-            return await _context.ChatMembers.Where(member => member.User.Id == userId)
-                .Select(member => member.Chat)
-                .ToListAsync();
+            return await _context.ChatMembers.Where(member => member.Chat.Id == chatId).Select(member => member.User).ToListAsync();
         }
 
         [HttpPost("{ownerId}")]

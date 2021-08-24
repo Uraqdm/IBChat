@@ -18,12 +18,6 @@ namespace IBChat.Controllers
             _context = context;
         }
 
-        [HttpGet("Chat/{chatId}")]
-        public async Task<IEnumerable<User>> GetChatUsers(Guid chatId)
-        {
-            return await _context.ChatMembers.Where(member => member.Chat.Id == chatId).Select(member => member.User).ToListAsync();
-        }
-
         [HttpGet("{userId}")]
         public async Task<ActionResult<User>> GetUser(Guid userId)
         {
@@ -32,6 +26,19 @@ namespace IBChat.Controllers
             if (user == null) return NotFound();
 
             return user;
+        }
+
+        [HttpGet("UserChats/{userId}")]
+        public async Task<ActionResult<IEnumerable<Chat>>> GetUserChats(Guid userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user == null)
+                return NotFound();
+
+            return await _context.ChatMembers.Where(member => member.User.Id == userId)
+                .Select(member => member.Chat)
+                .ToListAsync();
         }
 
         [HttpPut("Auth/")]
