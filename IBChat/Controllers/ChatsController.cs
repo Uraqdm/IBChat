@@ -104,11 +104,23 @@ namespace IBChat.Controllers
             return NoContent();
         }
 
-        [HttpPost("AddMember/")]
-        public async Task<IActionResult> AddChatForUser(ChatMember newMember)
+        [HttpPost("AddMember/{chatId}")]
+        public async Task<IActionResult> AddChatForUser(Guid chatId,User user)
         {
-            if (newMember == null)
+            var member = await _context.Users.FindAsync(user.Id);
+
+            if (member == null)
+                return NotFound();
+
+            var chat = await _context.Chats.FindAsync(chatId);
+
+            if (chat == null)
+                return NotFound();
+
+            if (_context.ChatMembers.Where(m => m.Chat.Id == chatId && m.User.Id == member.Id).Any())
                 return BadRequest();
+
+            var newMember = new ChatMember { Chat = chat, User = member };
 
             _context.ChatMembers.Add(newMember);
 

@@ -22,6 +22,12 @@ namespace IBGChatDesctop.ViewModels
 
         #endregion
 
+        #region events
+
+        public static event ChatAdded ChatJoined;
+
+        #endregion
+
         #region fields
 
         private readonly HttpClientService service;
@@ -64,18 +70,17 @@ namespace IBGChatDesctop.ViewModels
                 return;
             }
 
-            var chat = new Chat { Id = guid };
             var user = MainPageViewModel.CurrentUser;
 
-            var newMember = new ChatMember { Chat = chat, User = user };
-
-            var newChat = await service.AddChatForUserAsync(newMember);
+            var newChat = await service.AddChatForUserAsync(guid, user);
 
             if (newChat == null)
             {
                 ErrorMessage = "Chat not found. Please, try again";
                 return;
             }
+
+            ChatJoined?.Invoke(this, newChat);
 
             ThisWindow.Visibility = Visibility.Collapsed;
         }

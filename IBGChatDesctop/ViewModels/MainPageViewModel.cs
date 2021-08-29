@@ -68,6 +68,7 @@ namespace IBGChatDesctop.ViewModels
             ShareChat = new DelegateCommand(ShareSelectedChat, (obj) => SelectedChat != null);
 
             AddingChatWindowViewModel.ChatAdded += OnChatAdded;
+            JoiningChatWindowViewModel.ChatJoined += OnChatAdded;
         }
 
         #endregion
@@ -147,7 +148,7 @@ namespace IBGChatDesctop.ViewModels
 
         #region event methods
 
-        public void OnChatAdded(object sender, Chat addedChat)
+        private void OnChatAdded(object sender, Chat addedChat)
         {
             Chats.Add(addedChat);
         }
