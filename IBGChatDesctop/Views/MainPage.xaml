@@ -87,21 +87,16 @@
                         <GradientStop Color="LightSlateGray" Offset="1"/>
                     </LinearGradientBrush>
                 </Grid.Background>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="7*"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
+                <DockPanel LastChildFill="True">
                     
-                    <TextBlock Text="{Binding SelectedChat.Name}" Foreground="White" Margin="5"/>
 
-                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Button Content="Share" Command="{Binding ShareChat}" Background="Transparent" Foreground="White"/>
-                        <Separator />
-                        <Button Background="Transparent" Foreground="white" Content="Delete" Command="{Binding DeleteChat}"  />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" DockPanel.Dock="Right">
+                        <Button Content="Share" Command="{Binding ShareChat}" Background="Green" Foreground="White" Margin="5" TextBlock.FontSize="{StaticResource Small}"/>
+                        <Button Background="Red" Foreground="White" Content="Delete" Command="{Binding DeleteChat}" Margin="5" TextBlock.FontSize="{StaticResource Small}"/>
+                        <Button Content="Refresh" Foreground="white" Command="{Binding RefreshChat}" Margin="5" TextBlock.FontSize="{StaticResource Small}"/>
                     </StackPanel>
-                    
-                </Grid>
+                    <TextBlock Text="{Binding SelectedChat.Name}" Foreground="White" Margin="5" DockPanel.Dock="Left"/>
+                </DockPanel>
             </Grid>
 
             <ListBox ItemsSource="{Binding SelectedChatMessages}" Grid.Row="1" Background="Transparent" BorderThickness="0" x:Name="messagesContainer"

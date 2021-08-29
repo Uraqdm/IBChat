@@ -50,6 +50,7 @@ namespace IBGChatDesctop.ViewModels
         public ICommand JoinChat { get; }
         public ICommand DeleteChat { get; }
         public ICommand ShareChat { get; }
+        public ICommand RefreshChat { get; }
 
         #endregion
 
@@ -66,6 +67,7 @@ namespace IBGChatDesctop.ViewModels
             JoinChat = new DelegateCommand(JoinChatAsync);
             DeleteChat = new DelegateCommand(DeleteChatAsync, (obj) => SelectedChat != null);
             ShareChat = new DelegateCommand(ShareSelectedChat, (obj) => SelectedChat != null);
+            RefreshChat = new DelegateCommand(RefreshSelectedChat);
 
             AddingChatWindowViewModel.ChatAdded += OnChatAdded;
             JoiningChatWindowViewModel.ChatJoined += OnChatAdded;
@@ -142,6 +144,11 @@ namespace IBGChatDesctop.ViewModels
         {
             Clipboard.SetText(SelectedChat.Id.ToString());
             MessageBox.Show("Link copied to clipboard.");
+        }
+
+        private async void RefreshSelectedChat (object _)
+        {
+            SelectedChatMessages = new(await service.GetChatMessagesAsync(SelectedChat.Id));
         }
 
         #endregion
